@@ -26,6 +26,10 @@ namespace AnkiFlashCardHelper
 		private int _maxMeanings;
 		private bool _loaded;
 		private string _notFoundWords;
+		private int _inputCount;
+		private int _outputCount;
+		private int _notFoundWordsCount;
+		private int _duplicates;
 
 		public string Input
 		{
@@ -120,6 +124,46 @@ namespace AnkiFlashCardHelper
 			}
 		}
 
+		public int InputCount
+		{
+			get { return _inputCount; }
+			set
+			{
+				_inputCount = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public int OutputCount
+		{
+			get { return _outputCount; }
+			set
+			{
+				_outputCount = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public int NotFoundWordsCount
+		{
+			get { return _notFoundWordsCount; }
+			set
+			{
+				_notFoundWordsCount = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public int Duplicates
+		{
+			get { return _duplicates; }
+			set
+			{
+				_duplicates = value;
+				OnPropertyChanged();
+			}
+		}
+
 		public Dictionary<string, JWord> JWords { get; set; }
 		public List<JWord> Matches { get; set; }
 		public List<int> AvailableMaxReadings { get; set; }
@@ -168,10 +212,19 @@ namespace AnkiFlashCardHelper
 			if (Loaded)
 			{
 				_inputWords = Input.Split(new[] { Environment.NewLine, "\t", " ", ",", "、", ";", "/", "\\" }, StringSplitOptions.RemoveEmptyEntries);
+				for (int i = 0; i < _inputWords.Length; i++)
+				{
+					string inputWord = _inputWords[i];
+					_inputWords[i] = inputWord.Trim(new[] { '\t', ' ', ',', '、', ';', '/', '\\' }); // maybe redundant
+				}
 				var ankiImportCreator = new AnkiImportCreator(MaxMeanings, MaxReadings);
 				Matches = new List<JWord>();
 				var sb = new StringBuilder();
 				var alreadyFound = new HashSet<string>();
+				NotFoundWordsCount = 0;
+				OutputCount = 0;
+				Duplicates = 0;
+				InputCount = 0;
 				foreach (string inputWord in _inputWords)
 				{
 					if (JWords.ContainsKey(inputWord))
@@ -179,12 +232,19 @@ namespace AnkiFlashCardHelper
 						if (alreadyFound.Add(inputWord)) // prevent duplicates
 						{
 							Matches.Add(JWords[inputWord]);
+							OutputCount++;
+						}
+						else
+						{
+							Duplicates++;
 						}
 					}
 					else
 					{
 						sb.AppendLine(inputWord);
+						NotFoundWordsCount++;
 					}
+					InputCount++;
 				}
 
 				NotFoundWords = sb.ToString();
