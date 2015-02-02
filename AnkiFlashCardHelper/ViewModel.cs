@@ -83,6 +83,7 @@ namespace AnkiFlashCardHelper
 			{
 				_maxReadings = value;
 				OnPropertyChanged();
+				Update();
 			}
 		}
 
@@ -93,6 +94,7 @@ namespace AnkiFlashCardHelper
 			{
 				_maxMeanings = value;
 				OnPropertyChanged();
+				Update();
 			}
 		}
 
