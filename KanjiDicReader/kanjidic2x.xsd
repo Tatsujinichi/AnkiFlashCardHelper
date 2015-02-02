@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="kanjidic2">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="header"/>
+        <xs:element ref="character" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="header">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="file_version"/>
+        <xs:element ref="database_version"/>
+        <xs:element ref="date_of_creation"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="file_version" type="xs:unsignedInt" />
+  <xs:element name="database_version" type="xs:string" />
+  <xs:element name="date_of_creation" type="xs:date" />
+
+  <xs:element name="character">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="literal"/>
+        <xs:element ref="codepoint"/>
+        <xs:element ref="radical"/>
+        <xs:element ref="misc"/>
+        <xs:element ref="dic_number" minOccurs="0"/>
+        <xs:element ref="query_code" minOccurs="0"/>
+        <xs:element ref="reading_meaning" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="literal" type="xs:string"/>
+  
+  <xs:element name="codepoint">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="cp_value" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="cp_value">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute ref="cp_type" use="required"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:attribute name="cp_type">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="jis208"/>
+        <xs:enumeration value="jis212"/>
+        <xs:enumeration value="jis213"/>
+        <xs:enumeration value="ucs"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+
+  <xs:element name="radical">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="rad_value" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="rad_value">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:unsignedByte">
+          <xs:attribute ref="rad_type" use="required"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:attribute name="rad_type">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="classical"/>
+        <xs:enumeration value="nelson_c"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+  
+  <xs:element name="misc">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="grade" minOccurs="0"/>
+        <xs:element ref="stroke_count" maxOccurs="unbounded"/>
+        <xs:element ref="variant" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="freq" minOccurs="0"/>
+        <xs:element ref="rad_name" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="jlpt" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="grade">
+    <xs:simpleType>
+      <xs:restriction base="xs:unsignedByte">
+        <xs:enumeration value="1"/>
+        <xs:enumeration value="2"/>
+        <xs:enumeration value="3"/>
+        <xs:enumeration value="4"/>
+        <xs:enumeration value="5"/>
+        <xs:enumeration value="6"/>
+        <xs:enumeration value="8"/>
+        <xs:enumeration value="9"/>
+        <xs:enumeration value="10"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+
+  <xs:element name="stroke_count" type="xs:unsignedByte"/>
+  
+  <xs:element name="variant">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute ref="var_type" use="required"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:attribute name="var_type">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="jis208"/>
+        <xs:enumeration value="jis212"/>
+        <xs:enumeration value="jis213"/>
+        <xs:enumeration value="deroo"/>
+        <xs:enumeration value="njecd"/>
+        <xs:enumeration value="s_h"/>
+        <xs:enumeration value="nelson_c"/>
+        <xs:enumeration value="oneill"/>
+        <xs:enumeration value="ucs"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+
+  <xs:element name="freq" type="xs:unsignedShort"/>
+  <xs:element name="rad_name" type="xs:string"/>
+  <xs:element name="jlpt" type="xs:unsignedByte"/>
+
+  <xs:element name="dic_number">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="dic_ref" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="dic_ref">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute ref="dr_type" use="required"/>
+          <xs:attribute name="m_vol" type="xs:unsignedByte"/>
+          <xs:attribute name="m_page" type="xs:unsignedShort"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:attribute name="dr_type">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="nelson_c"/>
+        <xs:enumeration value="nelson_n"/>
+        <xs:enumeration value="halpern_njecd"/>
+        <xs:enumeration value="halpern_kkld"/>
+        <xs:enumeration value="heisig"/>
+        <xs:enumeration value="gakken"/>
+        <xs:enumeration value="oneill_names"/>
+        <xs:enumeration value="oneill_kk"/>
+        <xs:enumeration value="moro"/>
+        <xs:enumeration value="henshall"/>
+        <xs:enumeration value="sh_kk"/>
+        <xs:enumeration value="sakade"/>
+        <xs:enumeration value="jf_cards"/>
+        <xs:enumeration value="henshall3"/>
+        <xs:enumeration value="tutt_cards"/>
+        <xs:enumeration value="crowley"/>
+        <xs:enumeration value="kanji_in_context"/>
+        <xs:enumeration value="kodansha_compact"/>
+        <xs:enumeration value="busy_people"/>
+        <xs:enumeration value="maniette"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+
+  <xs:element name="query_code">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="q_code" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="q_code">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute ref="qc_type" use="required"/>
+          <xs:attribute ref="skip_misclass"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:attribute name="qc_type">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="skip"/>
+        <xs:enumeration value="sh_desc"/>
+        <xs:enumeration value="four_corner"/>
+        <xs:enumeration value="deroo"/>
+        <xs:enumeration value="misclass"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+
+  <xs:attribute name="skip_misclass" >
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="posn"/>
+        <xs:enumeration value="stroke_count"/>
+        <xs:enumeration value="stroke_and_posn"/>
+        <xs:enumeration value="stroke_diff"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+  
+  <xs:element name="reading_meaning">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="rmgroup" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="nanori" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+	<xs:element name="rmgroup">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="reading" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="meaning" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+  
+	<xs:element name="reading">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+          <xs:attribute ref="r_type" use="required"/>
+          <xs:attribute ref="on_type"/>     
+					<xs:attribute name="r_status" type="xs:string" fixed="jy"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+
+  <xs:attribute name="r_type">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="pinyin"/>
+        <xs:enumeration value="korean_r"/>
+        <xs:enumeration value="korean_h"/>
+        <xs:enumeration value="ja_on"/>
+        <xs:enumeration value="ja_kun"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+
+  <xs:attribute name="on_type">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="kan"/>
+        <xs:enumeration value="go"/>
+        <xs:enumeration value="tou"/>
+        <xs:enumeration value="kan'you"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+  
+  <xs:element name="meaning">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="m_lang" type="xs:language"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="nanori" type="xs:string"/>
+    
+</xs:schema>
