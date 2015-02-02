@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using AnkiFlashCardHelper.Annotations;
@@ -24,6 +25,7 @@ namespace AnkiFlashCardHelper
 		private int _maxReadings;
 		private int _maxMeanings;
 		private bool _loaded;
+		private string _notFoundWords;
 
 		public string Input
 		{
@@ -32,6 +34,16 @@ namespace AnkiFlashCardHelper
 			{
 				_input = value;
 				Update();
+				OnPropertyChanged();
+			}
+		}
+
+		public string NotFoundWords
+		{
+			get { return _notFoundWords; }
+			set
+			{
+				_notFoundWords = value;
 				OnPropertyChanged();
 			}
 		}
@@ -109,7 +121,7 @@ namespace AnkiFlashCardHelper
 		}
 
 		public Dictionary<string, JWord> JWords { get; set; }
-		public Dictionary<string, JWord> Matches { get; set; }
+		public List<JWord> Matches { get; set; }
 		public List<int> AvailableMaxReadings { get; set; }
 		public List<int> AvailableMaxMeanings { get; set; }
 
@@ -120,7 +132,7 @@ namespace AnkiFlashCardHelper
 			Output = string.Empty;
 			DictionaryFile = "KanjiDicReader.JMdict_e.gz";
 			OutputFile = @"C:\AnkiTest\test.csv";
-			AvailableMaxReadings = new List<int>{1,2,3,4,5,6};
+			AvailableMaxReadings = new List<int> { 1, 2, 3, 4, 5, 6 };
 			AvailableMaxMeanings = new List<int> { 1, 2, 3, 4, 5, 6 };
 			MaxMeanings = 3;
 			MaxReadings = 3;
@@ -155,20 +167,37 @@ namespace AnkiFlashCardHelper
 		{
 			if (Loaded)
 			{
-				_inputWords = Input.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
-				for (int i = 0; i < _inputWords.Length; i++)
-				{
-					string inputWord = _inputWords[i];
-					_inputWords[i] = inputWord.Trim(new[] {' ', ',', ';'});
-				}
+				_inputWords = Input.Split(new[] { Environment.NewLine, "\t", " ", ",", "、", ";", "/", "\\" }, StringSplitOptions.RemoveEmptyEntries);
+				//for (int i = 0; i < _inputWords.Length; i++)
+				//{
+				//	string inputWord = _inputWords[i];
+				//	_inputWords[i] = inputWord.Trim(new[] { '\t', ' ', ',', '、', ';', '/', '\\' }); // maybe redundant
+				//}
 
 				var ankiImportCreator = new AnkiImportCreator(MaxMeanings, MaxReadings);
-				Matches = JWords.Where(entry => _inputWords.Contains(entry.Key)).ToDictionary(k => k.Key, v => v.Value);
+
+				Matches = new List<JWord>();
+
+				var sb = new StringBuilder();
+
+				foreach (string inputWord in _inputWords)
+				{
+					if (JWords.ContainsKey(inputWord))
+					{
+						Matches.Add(JWords[inputWord]);
+					}
+					else
+					{
+						sb.AppendLine(inputWord);
+					}
+				}
+
+				NotFoundWords = sb.ToString();
 
 				byte[] bytes;
 				using (var ms = new MemoryStream())
 				{
-					ankiImportCreator.WriteImportStream(ms, Matches.Values);
+					ankiImportCreator.WriteImportStream(ms, Matches);
 					bytes = ms.ToArray();
 				}
 				using (var ms = new MemoryStream(bytes))
@@ -192,8 +221,9 @@ namespace AnkiFlashCardHelper
 				}
 				using (var fs = new FileStream(OutputFile, FileMode.Create, FileAccess.Write))
 				{
-					var ankiImportCreator = new AnkiImportCreator(3, 3);
-					ankiImportCreator.WriteImportStream(fs, Matches.Values);
+					//TODO: // maybe just write the output field since we already called this
+					var ankiImportCreator = new AnkiImportCreator(MaxMeanings, MaxReadings);
+					ankiImportCreator.WriteImportStream(fs, Matches);
 				}
 			}
 		}

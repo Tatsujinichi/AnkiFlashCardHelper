@@ -17,23 +17,21 @@
 			<RowDefinition></RowDefinition>
 		</Grid.RowDefinitions>
 		<TextBlock>Enter words</TextBlock>
+		
+		<TextBox Grid.Column="0" Grid.Row="1" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" MinWidth="60"></TextBox>
+		<GridSplitter Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" ResizeDirection="Columns" Background="{StaticResource MyColorBrush}" Width="1"></GridSplitter>
+		<DockPanel Grid.Column="0" Grid.Row="2" >
+			<Border DockPanel.Dock="Top" BorderThickness="1" BorderBrush="{StaticResource MyColorBrush}">
+				<TextBlock>Not found</TextBlock>
+			</Border>
+			<TextBlock Text="{Binding NotFoundWords}"></TextBlock>
+		</DockPanel>
 		<Border Grid.Column="1" Grid.Row="0" BorderThickness="1" BorderBrush="{StaticResource MyColorBrush}">
 			<TextBlock >Preview</TextBlock>
 		</Border>
-		<TextBox Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" Grid.Column="0" Grid.Row="1" Grid.RowSpan="3" MinWidth="60"></TextBox>
-		<GridSplitter Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" ResizeDirection="Columns" Background="{StaticResource MyColorBrush}" Width="1"></GridSplitter>
-		<TextBlock Text="{Binding Output}" Grid.Column="1" Grid.RowSpan="2" Grid.Row="1"></TextBlock>
+		<TextBlock Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Text="{Binding Output}"></TextBlock>
 		<GridSplitter Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" ResizeDirection="Columns" Background="{StaticResource MyColorBrush}" Width="1"></GridSplitter>
-		<!--<StackPanel Grid.Column="2" Grid.Row="1">
-			<TextBlock HorizontalAlignment="Center">Input Path</TextBlock>
-			<TextBox Text="{Binding DictionaryFile}" MinWidth="200"  HorizontalAlignment="Center"></TextBox>
-			<Button Width="60" Click="Browse_Click">Browse</Button>
-		</StackPanel>-->
-		<StackPanel Grid.Column="2" Grid.Row="2">
-			<TextBlock HorizontalAlignment="Center">Output Path</TextBlock>
-			<TextBox Text="{Binding OutputFile}" Width="170"  HorizontalAlignment="Center"></TextBox>
-			<Button Height="30" Width="60" HorizontalAlignment="Center" Click="Button_Click" IsEnabled="{Binding Loaded}">Write file</Button>
-		</StackPanel>
+
 		<DockPanel Grid.Column="2" Grid.Row="1">
 			<StackPanel>
 				<TextBlock>Max Readings</TextBlock>
@@ -45,6 +43,11 @@
 				<ComboBox SelectedValue="{Binding MaxMeanings}" ItemsSource="{Binding AvailableMaxMeanings}"></ComboBox>
 			</StackPanel>
 		</DockPanel>
-		
+		<StackPanel Grid.Column="2" Grid.Row="2">
+			<TextBlock HorizontalAlignment="Center">Output Path</TextBlock>
+			<TextBox Text="{Binding OutputFile}" Width="170"  HorizontalAlignment="Center"></TextBox>
+			<Button Height="30" Width="60" HorizontalAlignment="Center" Click="Button_Click" IsEnabled="{Binding Loaded}">Write file</Button>
+		</StackPanel>
+
 	</Grid>
 </Window>
