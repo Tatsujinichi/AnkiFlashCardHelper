@@ -168,23 +168,18 @@ namespace AnkiFlashCardHelper
 			if (Loaded)
 			{
 				_inputWords = Input.Split(new[] { Environment.NewLine, "\t", " ", ",", "、", ";", "/", "\\" }, StringSplitOptions.RemoveEmptyEntries);
-				//for (int i = 0; i < _inputWords.Length; i++)
-				//{
-				//	string inputWord = _inputWords[i];
-				//	_inputWords[i] = inputWord.Trim(new[] { '\t', ' ', ',', '、', ';', '/', '\\' }); // maybe redundant
-				//}
-
 				var ankiImportCreator = new AnkiImportCreator(MaxMeanings, MaxReadings);
-
 				Matches = new List<JWord>();
-
 				var sb = new StringBuilder();
-
+				var alreadyFound = new HashSet<string>();
 				foreach (string inputWord in _inputWords)
 				{
 					if (JWords.ContainsKey(inputWord))
 					{
-						Matches.Add(JWords[inputWord]);
+						if (alreadyFound.Add(inputWord)) // prevent duplicates
+						{
+							Matches.Add(JWords[inputWord]);
+						}
 					}
 					else
 					{
