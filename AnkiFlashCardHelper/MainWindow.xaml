@@ -24,7 +24,7 @@
 			<TextBlock>Count:</TextBlock>
 			<TextBlock Text="{Binding InputCount}"></TextBlock>
 			<TextBlock>Duplicates:</TextBlock>
-			<TextBlock Text="{Binding Duplicates}"></TextBlock>
+			<TextBlock Text="{Binding Duplicates.Count}"></TextBlock>
 		</WrapPanel>
 		<TextBox Grid.Column="0" Grid.Row="1" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" MinWidth="60"></TextBox>
 		<GridSplitter Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" ResizeDirection="Columns" Background="{StaticResource MyColorBrush}" Width="2"></GridSplitter>
@@ -37,7 +37,7 @@
 				</WrapPanel>
 			</Border>
 			<ScrollViewer VerticalScrollBarVisibility="Auto">
-				<TextBlock Text="{Binding NotFoundWords}"></TextBlock>
+				<ListBox ItemsSource="{Binding NotFoundWords}" SelectedItem="{Binding SelectedNotFoundWord}"></ListBox>
 			</ScrollViewer>
 		</DockPanel>
 		<Border Grid.Column="1" Grid.Row="0" BorderThickness="1" BorderBrush="{StaticResource MyColorBrush}">
@@ -64,7 +64,8 @@
 			</StackPanel>
 			<TextBlock HorizontalAlignment="Center">Output Path</TextBlock>
 			<TextBox Text="{Binding OutputFile}" HorizontalAlignment="Stretch"></TextBox>
-			<Button Height="30" Width="60" HorizontalAlignment="Center" Click="Button_Click" IsEnabled="{Binding Loaded}">Write file</Button>
+			<Button Click="ClearDuplicates_Click">Clear duplicates</Button>
+			<Button Click="WriteFile_Click" IsEnabled="{Binding Loaded}">Write file</Button>
 		</StackPanel>
 	</Grid>
 </Window>

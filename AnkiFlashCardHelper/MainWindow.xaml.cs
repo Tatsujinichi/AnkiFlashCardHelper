@@ -26,10 +26,17 @@ namespace AnkiFlashCardHelper
 			InitializeComponent();
 		}
 
-		private void Button_Click(object sender, RoutedEventArgs e)
+		private void WriteFile_Click(object sender, RoutedEventArgs e)
 		{
 			((ViewModel)DataContext).WriteFile();
 		}
+
+		private void ClearDuplicates_Click(object sender, RoutedEventArgs e)
+		{
+			((ViewModel)DataContext).ClearDuplicates();
+		}
+
+
 
 		//private void Browse_Click(object sender, RoutedEventArgs e)
 		//{
