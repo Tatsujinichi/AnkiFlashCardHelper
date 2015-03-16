@@ -31,6 +31,7 @@ namespace AnkiFlashCardHelper
 		private int _notFoundWordsCount;
 		private ObservableCollection<string> _duplicates;
 		private string _selectedNotFoundWord;
+		private int _missingWordIndex;
 
 		public string Input
 		{
@@ -176,6 +177,16 @@ namespace AnkiFlashCardHelper
 			}
 		}
 
+		public int MissingWordIndex
+		{
+			get { return _missingWordIndex; }
+			set
+			{
+				_missingWordIndex = value;
+				OnPropertyChanged();
+			}
+		}
+
 		public Dictionary<string, JWord> JWords { get; set; }
 		public List<JWord> Matches { get; set; }
 		public List<int> AvailableMaxReadings { get; set; }
@@ -296,7 +307,10 @@ namespace AnkiFlashCardHelper
 
 		private void HighlightNotFoundWord()
 		{
-			
+			if (!string.IsNullOrEmpty(SelectedNotFoundWord))
+			{
+				MissingWordIndex = Input.IndexOf(SelectedNotFoundWord, StringComparison.Ordinal);
+			}
 		}
 
 		internal void WriteFile()

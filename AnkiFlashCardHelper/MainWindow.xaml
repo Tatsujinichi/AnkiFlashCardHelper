@@ -1,6 +1,7 @@
 ﻿<Window x:Class="AnkiFlashCardHelper.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:AnkiFlashCardHelper.Controls"
         Title="{Binding Title}" Height="500" Width="750">
 	<Window.Resources>
 		<Brush x:Key="MyColorBrush">LightGray</Brush>
@@ -26,7 +27,7 @@
 			<TextBlock>Duplicates:</TextBlock>
 			<TextBlock Text="{Binding Duplicates.Count}"></TextBlock>
 		</WrapPanel>
-		<TextBox Grid.Column="0" Grid.Row="1" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" MinWidth="60"></TextBox>
+		<controls:IndexableTextBoxUserControl Grid.Column="0" Grid.Row="1" Text="{Binding Input, Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}" CaretPosition="{Binding MissingWordIndex, Mode=OneWay}" ></controls:IndexableTextBoxUserControl>
 		<GridSplitter Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" ResizeDirection="Columns" Background="{StaticResource MyColorBrush}" Width="2"></GridSplitter>
 		<DockPanel Grid.Column="0" Grid.Row="2" >
 			<Border DockPanel.Dock="Top" BorderThickness="1" BorderBrush="{StaticResource MyColorBrush}">

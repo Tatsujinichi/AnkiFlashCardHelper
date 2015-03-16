@@ -36,8 +36,7 @@ namespace AnkiFlashCardHelper
 			((ViewModel)DataContext).ClearDuplicates();
 		}
 
-
-
+		
 		//private void Browse_Click(object sender, RoutedEventArgs e)
 		//{
 		//	((ViewModel) DataContext).LoadDictionary();
