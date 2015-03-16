@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,5 +42,9 @@ namespace AnkiFlashCardHelper
 		//{
 		//	((ViewModel) DataContext).LoadDictionary();
 		//}
+		private void MainWindow_OnClosing(object sender, CancelEventArgs e)
+		{
+			((ViewModel)DataContext).WritePersistentData();
+		}
 	}
 }

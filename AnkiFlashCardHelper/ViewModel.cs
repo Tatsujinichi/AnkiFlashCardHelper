@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Xml;
 using AnkiFlashCardHelper.Annotations;
 using KanjiDicReader;
@@ -32,6 +33,7 @@ namespace AnkiFlashCardHelper
 		private ObservableCollection<string> _duplicates;
 		private string _selectedNotFoundWord;
 		private int _missingWordIndex;
+		private readonly DiskReaderWriter _disk;
 
 		public string Input
 		{
@@ -191,7 +193,6 @@ namespace AnkiFlashCardHelper
 		public List<JWord> Matches { get; set; }
 		public List<int> AvailableMaxReadings { get; set; }
 		public List<int> AvailableMaxMeanings { get; set; }
-		
 
 		public ViewModel()
 		{
@@ -206,6 +207,11 @@ namespace AnkiFlashCardHelper
 			MaxMeanings = 3;
 			MaxReadings = 3;
 			LoadDictionary();
+
+			string path = Directory.GetCurrentDirectory();
+			string dataFile = Path.Combine(path, "data.txt");
+			_disk = new DiskReaderWriter(dataFile);
+			_input = _disk.ReadFromDisk();
 		}
 
 		//TODO: move biz logic out of view model
@@ -331,6 +337,10 @@ namespace AnkiFlashCardHelper
 			}
 		}
 
+		internal void WritePersistentData()
+		{
+			_disk.WriteToDisk(Input);
+		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
