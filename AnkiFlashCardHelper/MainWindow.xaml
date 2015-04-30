@@ -69,5 +69,8 @@
 			<Button Click="ClearDuplicates_Click">Clear duplicates</Button>
 			<Button Click="WriteFile_Click" IsEnabled="{Binding Loaded}">Write file</Button>
 		</StackPanel>
+		<StackPanel Grid.Column="2" Grid.Row="2">
+			<Button Click="AboutButton_Click">About</Button>
+		</StackPanel>
 	</Grid>
 </Window>

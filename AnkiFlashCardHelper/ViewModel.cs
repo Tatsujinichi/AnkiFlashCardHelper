@@ -194,6 +194,8 @@ namespace AnkiFlashCardHelper
 		public List<int> AvailableMaxReadings { get; set; }
 		public List<int> AvailableMaxMeanings { get; set; }
 
+		//TODO: do not show duplicates in not found
+		//TODO: move all file read/write related things to DiskReaderWriter class
 		public ViewModel()
 		{
 			Title = "AnkiCardImport Maker, using JMDict ....Loading....";

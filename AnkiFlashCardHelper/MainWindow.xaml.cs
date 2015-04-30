@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -45,6 +46,13 @@ namespace AnkiFlashCardHelper
 		private void MainWindow_OnClosing(object sender, CancelEventArgs e)
 		{
 			((ViewModel)DataContext).WritePersistentData();
+		}
+
+		private void AboutButton_Click(object sender, RoutedEventArgs e)
+		{
+			MessageBox.Show("AnkiFlashCardHelper by John Ferreira" +
+			                "\nuses JMDict." +
+			                "\nhttp://www.edrdg.org/jmdict/j_jmdict.html", "About", MessageBoxButton.OK);
 		}
 	}
 }
